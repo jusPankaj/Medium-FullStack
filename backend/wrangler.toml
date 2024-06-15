@@ -2,9 +2,9 @@ name = "my-app"
 compatibility_date = "2023-12-01"
 
 [vars]
-DATABASE_URL="put_your_prism_url_here"
+DATABASE_URL=""
 
-SECRET_KEY="ur_secret_key"
+SECRET_KEY=""
 
 
  

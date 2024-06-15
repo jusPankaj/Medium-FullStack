@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, sign, verify } from "hono/jwt";
-import { signupInput, signinInput  } from "@juscode/medium-common";
+import { signupInput, signinInput } from "@juscode/medium-common";
 
 export const userRouter = new Hono<{
   Bindings: {
@@ -14,12 +14,12 @@ export const userRouter = new Hono<{
 userRouter.post("/signup", async (c) => {
   // The body user is sending you must be sanitized
   const body = await c.req.json();
-  const { success } = signupInput.safeParse(body); 
-  if(!success) {
+  const { success } = signupInput.safeParse(body);
+  if (!success) {
     c.status(411);
     return c.json({
-      message : "Inputs not correct"
-    })
+      message: "Inputs not correct",
+    });
   }
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -51,12 +51,12 @@ userRouter.post("/signup", async (c) => {
 userRouter.post("signin", async (c) => {
   const body = await c.req.json();
 
-  const{ success } = signinInput.safeParse(body);
-  if(!success){
+  const { success } = signinInput.safeParse(body);
+  if (!success) {
     c.status(411);
     return c.json({
-      message : "Inputs are not correct"
-    })
+      message: "Inputs are not correct",
+    });
   }
 
   const prisma = new PrismaClient({
@@ -83,7 +83,7 @@ userRouter.post("signin", async (c) => {
       c.env.SECRET_KEY
     );
 
-    return c.text("Signed in Successfully");
+    return c.text(jwt);
   } catch (e) {
     console.log(e);
     c.status(411);

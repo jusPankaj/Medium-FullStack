@@ -121,7 +121,19 @@ blogRouter.get("/bulk", async (c) => {
   }).$extends(withAccelerate()); // only after this .$extends(withAccelerate) prisma will be able to talk to the database
 
   try {
-    const blogs = await prisma.post.findMany({});
+    const blogs = await prisma.post.findMany({
+      select:{
+        content: true,
+        title: true,
+        id: true,
+        author: {
+          select: {
+            name: true
+          }
+        }
+      }
+    });
+    
     return c.json({ blogs });
   } catch (error) {
     console.error(error);
@@ -143,10 +155,20 @@ blogRouter.get("/:id", async (c) => {
       where: {
         id: id,
       },
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        author: {
+          select: {
+            name: true
+          }
+        }
+      }
     });
 
     return c.json({
-      blog,
+      blog
     });
   } catch (e) {
     c.status(411);
