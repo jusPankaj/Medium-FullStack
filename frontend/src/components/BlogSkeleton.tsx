@@ -1,4 +1,3 @@
-import React from "react";
 import { Circle } from "./BlogCard";
 
 const BlogSkeleton = () => {
